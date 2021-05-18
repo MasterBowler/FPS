@@ -7,6 +7,7 @@ public class PlayerMovement : MonoBehaviour
     public CharacterController controller;
 
     public float speed = 12f;
+    public float dodgeSpeed = 40f;
     public float gravity = -9.81f;
     public float jumpHeight = 3f;
 
@@ -16,6 +17,7 @@ public class PlayerMovement : MonoBehaviour
 
     Vector3 velocity;
     bool isGrounded;
+    bool canDoubleJump = true;
 
     // Update is called once per frame
     void Update()
@@ -32,15 +34,19 @@ public class PlayerMovement : MonoBehaviour
 
         Vector3 move = transform.right * x + transform.forward * z;
 
-        controller.Move(move * speed * Time.deltaTime);
+        if(Input.GetKey(KeyCode.LeftShift)) // add cooldown and double dodge
+            controller.Move(move * dodgeSpeed * Time.deltaTime);
+        else
+            controller.Move(move * speed * Time.deltaTime);
 
-        if(Input.GetButtonDown("Jump") && isGrounded)
+        if(Input.GetButtonDown("Jump") && (isGrounded || canDoubleJump))
         {
+            canDoubleJump = !canDoubleJump;
             velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
         }
 
         velocity.y += gravity * Time.deltaTime;
-
+        
         controller.Move(velocity * Time.deltaTime);
     }
 }

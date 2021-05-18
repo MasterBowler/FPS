@@ -16,6 +16,17 @@ public class PlayerHealth : MonoBehaviour
         healthBar.SetMaxHealth(maxHealth);
     }
 
+    public void TakeDamage(float damage)
+    {
+        health -= damage;
+        health = Mathf.Clamp(health, 0f, maxHealth);
+        healthBar.SetHealth(health);
+        if (health == 0)
+        {
+            FindObjectOfType<GameManager>().EndGame();
+        }
+    }
+
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.collider.tag == "Bullet")

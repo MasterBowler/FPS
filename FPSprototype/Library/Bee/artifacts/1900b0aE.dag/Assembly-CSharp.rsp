@@ -325,6 +325,8 @@
 -r:"Library/Bee/artifacts/1900b0aE.dag/UnityEditor.UI.ref.dll"
 -r:"Library/Bee/artifacts/1900b0aE.dag/UnityEngine.UI.ref.dll"
 "Assets/Scripts/Cleanup.cs"
+"Assets/Scripts/Enemies/DoomedSoul.cs"
+"Assets/Scripts/Enemies/HelllKeeper.cs"
 "Assets/Scripts/EnemyAI.cs"
 "Assets/Scripts/GameManager.cs"
 "Assets/Scripts/Gun.cs"
@@ -332,6 +334,7 @@
 "Assets/Scripts/MouseLook.cs"
 "Assets/Scripts/PlayerHealth.cs"
 "Assets/Scripts/PlayerMovement.cs"
+"Assets/Scripts/Singleton.cs"
 "Assets/Scripts/Target.cs"
 -langversion:8.0
 

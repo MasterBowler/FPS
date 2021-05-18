@@ -11,17 +11,18 @@ public class EnemyAI : MonoBehaviour
     public float health;
 
     public Vector3 walkPoint;
-    bool walkPointSet;
+    protected bool walkPointSet;
     public float walkPointRange;
 
     public float timeBetweenAttacks;
-    bool alreadyAttacked;
+    protected bool alreadyAttacked;
     public GameObject projectile;
 
     public float sightRange, attackRange;
     public bool playerInSightRange, playerInAttackRange;
+    public float turnSpeed = 10f;
 
-    private void Awake()
+    protected void Awake()
     {
         player = GameObject.Find("First Person Player").transform;
         agent = GetComponent<NavMeshAgent>();
@@ -39,7 +40,7 @@ public class EnemyAI : MonoBehaviour
         if (playerInAttackRange && playerInSightRange)
             AttackPlayer();
     }
-    private void Patroling()
+    protected virtual void Patroling()
     {
         if (!walkPointSet)
             SearchWalkPoint();
@@ -52,7 +53,7 @@ public class EnemyAI : MonoBehaviour
             walkPointSet = false;
     }
 
-    private void SearchWalkPoint()
+    protected void SearchWalkPoint()
     {
         float randomZ = Random.Range(-walkPointRange, walkPointRange);
         float randomX = Random.Range(-walkPointRange, walkPointRange);
@@ -63,16 +64,19 @@ public class EnemyAI : MonoBehaviour
             walkPointSet = true;
     }
 
-    private void ChasePlayer()
+    protected virtual void ChasePlayer()
     {
         agent.SetDestination(player.position);
     }
 
-    private void AttackPlayer()
+    protected virtual void AttackPlayer()
     {
         agent.SetDestination(transform.position);
 
-        transform.LookAt(player);
+        //transform.LookAt(player); made the enemy tilt instead of only face the player
+        Vector3 direction = (player.position - transform.position).normalized;
+        Quaternion lookRotation = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z));
+        transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * turnSpeed);
 
         if(!alreadyAttacked)
         {
@@ -85,7 +89,7 @@ public class EnemyAI : MonoBehaviour
         }
     }
 
-    private void ResetAttack()
+    protected virtual void ResetAttack()
     {
         alreadyAttacked = false;
     }
@@ -100,12 +104,12 @@ public class EnemyAI : MonoBehaviour
         }
     }
 
-    private void DestroyEnemy()
+    protected void DestroyEnemy()
     {
         Destroy(gameObject);
     }
 
-    private void OnDrawGizmosSelected()
+    protected void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, attackRange);
