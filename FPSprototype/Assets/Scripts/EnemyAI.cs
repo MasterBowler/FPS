@@ -22,10 +22,14 @@ public class EnemyAI : MonoBehaviour
     public bool playerInSightRange, playerInAttackRange;
     public float turnSpeed = 10f;
 
+    protected GameManager gameManager;
+
     protected void Awake()
     {
         player = GameObject.Find("First Person Player").transform;
         agent = GetComponent<NavMeshAgent>();
+        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+        gameManager.IncreaseEnemyCount();
     }
 
     public void Update()
@@ -106,6 +110,7 @@ public class EnemyAI : MonoBehaviour
 
     protected void DestroyEnemy()
     {
+        gameManager.DecreaseEnemyCount();
         Destroy(gameObject);
     }
 

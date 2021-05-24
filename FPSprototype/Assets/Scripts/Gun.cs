@@ -71,9 +71,16 @@ public class Gun : MonoBehaviour
             Debug.Log(hit.transform.name);
 
             EnemyAI target = hit.transform.GetComponent<EnemyAI>();
+            Beholder beholder = hit.transform.GetComponent<Beholder>();
+
             if (target != null)
             {
                 target.TakeDamage(damage);
+            }
+
+            if (beholder != null)
+            {
+                beholder.TakeDamage(damage);
             }
 
             if ( hit.rigidbody != null)

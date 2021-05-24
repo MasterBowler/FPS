@@ -10,6 +10,7 @@ public class DoomedSoul : EnemyAI
     void Start()
     {
         animator = GetComponent<Animator>();
+        playerHealth = GameObject.Find("First Person Player").GetComponent<PlayerHealth>();
     }
 
     protected override void Patroling()

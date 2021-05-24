@@ -2,42 +2,31 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class GameManager : Singleton<GameManager>
+public class GameManager : MonoBehaviour
 {
-
-    //what level the game is currently in
-    //load and unload game levels
-    //keep track of game state
-    //generate other persistent system
-
-
     bool gameOver = false;
+    //bool gameWon = false;
+    public int numberOfEnemies = 0;
 
-    //private static GameManager instance;
-
-    private string _currentLevelName = string.Empty;
-
-    List<AsyncOperation> _loadOperations;
-    /*
-    private void Awake()
+    public void IncreaseEnemyCount()
     {
-        if (instance == null)
-        {
-            instance = this;
-        } else
-        {
-            Destroy(gameObject);
-            Debug.LogError("There should be only one game manager instance.");
-        }
+        numberOfEnemies++;
     }
-    */
-    private void Start()
+
+    public void DecreaseEnemyCount()
     {
-        //DontDestroyOnLoad(gameObject);
+        numberOfEnemies--;
+        if (numberOfEnemies == 0)
+        {
+            //gameWon = true;
+            LoadNextLevel();
+        }
+            
+    }
 
-        //_loadOperations = new List<AsyncOperation>();
-
-        //LoadLevel("Main");
+    void LoadNextLevel()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
 
     public void EndGame()
@@ -53,47 +42,5 @@ public class GameManager : Singleton<GameManager>
     void Restart()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-    }
-
-    void OnLoadOperationComplete(AsyncOperation ao)
-    {
-        if(_loadOperations.Contains(ao))
-        {
-            _loadOperations.Remove(ao);
-
-            // dispatch message
-            // transition between scenes
-        }
-        Debug.Log("Load Complete.");
-    }
-
-    void OnUnloadOperationComplete(AsyncOperation ao)
-    {
-        Debug.Log("Unload Complete.");
-    }
-
-    public void LoadLevel(string levelName)
-    {
-        AsyncOperation ao = SceneManager.LoadSceneAsync(levelName, LoadSceneMode.Additive);
-        if (ao == null)
-        {
-            Debug.LogError("[GameManager] Unable to load level" + levelName);
-            return;
-        }
-
-        ao.completed += OnLoadOperationComplete;
-        _loadOperations.Add(ao);
-        _currentLevelName = levelName;
-    }
-
-    public void UnloadLevel(string levelName)
-    {
-        AsyncOperation ao = SceneManager.UnloadSceneAsync(levelName);
-        if (ao == null)
-        {
-            Debug.LogError("[GameManager] Unable to unload level" + levelName);
-            return;
-        }
-        ao.completed += OnUnloadOperationComplete;
     }
 }
