@@ -292,6 +292,7 @@
 -r:"Library/Bee/artifacts/1900b0aP.dag/Unity.Timeline.ref.dll"
 -r:"Library/Bee/artifacts/1900b0aP.dag/UnityEngine.UI.ref.dll"
 "Assets/Scripts/Cleanup.cs"
+"Assets/Scripts/DeathZone.cs"
 "Assets/Scripts/Enemies/Beholder.cs"
 "Assets/Scripts/Enemies/DoomedSoul.cs"
 "Assets/Scripts/Enemies/HelllKeeper.cs"

@@ -24,12 +24,16 @@ public class EnemyAI : MonoBehaviour
 
     protected GameManager gameManager;
 
+    private NavMeshPath path;
+
     protected void Awake()
     {
         player = GameObject.Find("First Person Player").transform;
         agent = GetComponent<NavMeshAgent>();
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
         gameManager.IncreaseEnemyCount();
+
+        path = new NavMeshPath();
     }
 
     public void Update()
@@ -71,6 +75,7 @@ public class EnemyAI : MonoBehaviour
     protected virtual void ChasePlayer()
     {
         agent.SetDestination(player.position);
+        //agent.CalculatePath(player.position, path);
     }
 
     protected virtual void AttackPlayer()

@@ -17,14 +17,14 @@ public class DoomedSoul : EnemyAI
     {
         base.Patroling();
         animator.SetFloat("speed", 0.5f);
-        agent.acceleration = 2;
+        //agent.acceleration = 4;
     }
 
     protected override void ChasePlayer()
     {
         base.ChasePlayer();
         animator.SetFloat("speed", 1f);
-        agent.acceleration = 8;
+        //agent.acceleration = 20;
     }
 
     protected override void AttackPlayer()
@@ -38,15 +38,23 @@ public class DoomedSoul : EnemyAI
         transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * turnSpeed);
 
         animator.SetFloat("speed", 0f);
-        agent.acceleration = 2;
+        //agent.acceleration = 2;
 
         if (!alreadyAttacked)
         {
             animator.SetBool("attack", true);
             playerHealth.TakeDamage(10);
+            //Invoke(nameof(DamagePlayer), 1f);
             alreadyAttacked = true;
             Invoke(nameof(ResetAttack), timeBetweenAttacks);
         }
+    }
+
+    void DamagePlayer()
+    {
+        playerInAttackRange = Physics.CheckSphere(transform.position, attackRange, whatIsPlayer);
+        if (playerInAttackRange)
+            playerHealth.TakeDamage(10);
     }
 
     protected override void ResetAttack()
